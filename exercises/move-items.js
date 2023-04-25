@@ -11,7 +11,7 @@
  * Example: const allItems = <Your code>;
  */
 
-// Your code goes here...
+const allItems = document.querySelectorAll('.item');
 
 
 
@@ -22,7 +22,7 @@
  * Example: const main = <Your code>
  * */
 
-// Your code goes here
+const main = document.getElementById('main');
 
 
 
@@ -33,7 +33,7 @@
  * Example: const favs = <Your code>;
  */
 
-// Your code goes here
+const favs = document.getElementById('favs');
 
 
 
@@ -46,9 +46,24 @@
  * Changes the icon of the element: fa-heart-circle-plus for main, fa-heart-crack for favs items.
  */
 
-// Your code goes here
+function updateCollections(id, direction) {
+  const card = document.getElementById(id);
+  const parentContainer = card.parentElement.id;
+  const icon = card.querySelector('.fa-solid')
 
+  parentContainer === 'main'
+    ? changeHeartIcon(icon, 'fa-heart-circle-plus', 'fa-heart-crack')
+    : changeHeartIcon(icon, 'fa-heart-crack', 'fa-heart-circle-plus');
+  
+  direction === 'toMain' 
+    ? document.getElementById('main').appendChild(card)
+    : document.getElementById('favs').appendChild(card)
+}
 
+function changeHeartIcon(icon, oldIcon, newIcon) {
+  icon.classList.remove(oldIcon)
+  icon.classList.add(newIcon)
+}
 
 /**
  * @task
@@ -64,6 +79,15 @@
  * * Make the updateCollections function call, assign the item Id and the direction defined above
  */
 
-// Your code goes here...
+allItems.forEach((card) => {
+  card.addEventListener('click', () => { 
+    const id = event.target.id;
+    const parentContainer = event.target.parentElement.id;
+    
+    parentContainer === 'main'
+    ? updateCollections(id, 'toFavs')
+    : updateCollections(id, 'toMain')
+  })
+})
 
 

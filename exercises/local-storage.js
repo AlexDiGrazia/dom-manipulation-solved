@@ -37,4 +37,44 @@
  * * add the event listener to the container, pass the callback.
  */
 
-// Your code goes here...
+
+//initialize favorites array to be used in event handler
+let favoritesArray;
+const itemsInStorage = JSON.parse(localStorage.getItem("favorites"));
+itemsInStorage 
+  ? favoritesArray = itemsInStorage
+  : favoritesArray = [];
+
+//load red boxes upon page refresh
+for (let id of favoritesArray) {
+  document.getElementById(id).style.backgroundColor = "red";
+}
+
+//event handling
+document
+  .querySelector(".cardsContainer")
+  .addEventListener("click", (e) => eventDelegator(e));
+
+function eventDelegator(e) {
+  const item = e.target;
+  if (Array.from(item.classList).includes("card")) {
+    addOrRemoveRed(item);
+  }
+}
+
+function addOrRemoveRed(item) {
+  item.style.backgroundColor === "white" || item.style.backgroundColor === ""
+    ? changeColorAndUpdateLocalStorage(item, 'red', 'push-to-favorites-array')
+    : changeColorAndUpdateLocalStorage(item, 'white', 'splice-from-favorites-array');
+}
+
+function changeColorAndUpdateLocalStorage(item, color, action) {
+  item.style.backgroundColor = color;
+  action === 'push-to-favorites-array' 
+    ? favoritesArray.push(item.id) 
+    : favoritesArray.splice(favoritesArray.indexOf(item.id), 1)
+  localStorage.setItem("favorites", JSON.stringify(favoritesArray));
+}
+
+
+
